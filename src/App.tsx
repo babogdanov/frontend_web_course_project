@@ -1,8 +1,17 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import FileUploadPage from "./pages/FileUpload.page";
 
 function App() {
+  const [data, setData] = useState();
+
+  useEffect(() => {
+    fetch("/api")
+      .then((res) => res.json())
+      .then((data) => setData(data.value));
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
@@ -18,7 +27,11 @@ function App() {
         >
           Learn React
         </a>
+        <h3>{data}</h3>
       </header>
+      <>
+      <FileUploadPage/>
+      </>
     </div>
   );
 }
