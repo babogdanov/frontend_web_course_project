@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import Table from "../../components/Table/Table";
 
 const FileUploadPage = () => {
   const [selectedFile, setSelectedFile] = useState(new File([], ""));
   const [isFilePicked, setIsFilePicked] = useState(false);
+  const [data, setData] = useState([]);
+  const [canRenderTable, setCanRenderTable] = useState(false);
 
   const changeHandler = (event: any) => {
     setSelectedFile(event.target.files[0]);
@@ -21,9 +24,12 @@ const FileUploadPage = () => {
       .then((response) => response.json())
       .then((result) => {
         console.log("Success:", result);
+        setData(result);
+        setCanRenderTable(true);
       })
       .catch((error) => {
         console.error("Error:", error);
+        setCanRenderTable(false);
       });
   };
 
@@ -44,8 +50,9 @@ const FileUploadPage = () => {
         <p>Select a file to show details</p>
       )}
       <div>
-        <button onClick={handleSubmission}>Submit</button>
+        <button onClick={handleSubmission}>Submit (only csv for now)</button>
       </div>
+      {canRenderTable && (<Table data={data}/>)}
     </div>
   );
 };
