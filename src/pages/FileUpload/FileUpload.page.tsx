@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Table from "../../components/Table/Table";
+import Page from "../../layout/Page";
 
 const FileUploadPage = () => {
   const [selectedFile, setSelectedFile] = useState(new File([], ""));
@@ -19,7 +20,7 @@ const FileUploadPage = () => {
 
     fetch("/files/csvToJson", {
       method: "POST",
-      body: formData
+      body: formData,
     })
       .then((response) => response.json())
       .then((result) => {
@@ -34,26 +35,28 @@ const FileUploadPage = () => {
   };
 
   return (
-    <div>
-      <input type="file" name="file" onChange={changeHandler} />
-      {isFilePicked ? (
-        <div>
-          <p>Filename: {selectedFile.name}</p>
-          <p>Filetype: {selectedFile.type}</p>
-          <p>Size in bytes: {selectedFile.size}</p>
-          <p>
-            lastModifiedDate:{" "}
-            {/*selectedFile.lastModifiedDate.toLocaleDateString()*/}
-          </p>
-        </div>
-      ) : (
-        <p>Select a file to show details</p>
-      )}
+    <Page>
       <div>
-        <button onClick={handleSubmission}>Submit (only csv for now)</button>
+        <input type="file" name="file" onChange={changeHandler} />
+        {isFilePicked ? (
+          <div>
+            <p>Filename: {selectedFile.name}</p>
+            <p>Filetype: {selectedFile.type}</p>
+            <p>Size in bytes: {selectedFile.size}</p>
+            <p>
+              lastModifiedDate:{" "}
+              {/*selectedFile.lastModifiedDate.toLocaleDateString()*/}
+            </p>
+          </div>
+        ) : (
+          <p>Select a file to show details</p>
+        )}
+        <div>
+          <button onClick={handleSubmission}>Submit (only csv for now)</button>
+        </div>
+        {canRenderTable && <Table data={data} />}
       </div>
-      {canRenderTable && (<Table data={data}/>)}
-    </div>
+    </Page>
   );
 };
 
