@@ -24,6 +24,11 @@ const FileUploadPage = () => {
     })
       .then((response) => response.json())
       .then((result) => {
+        if(result?.statusCode >= 400){
+          console.error("Error:", result?.message);
+          return;
+        }
+        
         console.log("Success:", result);
         setData(result);
         setCanRenderTable(true);
